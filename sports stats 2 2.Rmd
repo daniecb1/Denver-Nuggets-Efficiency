@@ -1,0 +1,116 @@
+---
+title: "sports stats 2 final project 2"
+author: "Danielle Contreras"
+date: "2023-04-10"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(broom)
+library(forcats)
+```
+
+## R Markdown
+
+```{r}
+#per100
+
+per_100 <- read.csv("C:\\Users\\danie\\OneDrive\\Undergrad\\Sports stats 2 final project\\per 100 .csv")
+per_100$Player[ per_100$Player == "Nikola Joki?" ] <- "Nikola Jokic"
+per_100$Player[ per_100$Player == "Vlatko ?an?ar" ] <- "Vlatko Cancar"
+per_100 <- per_100 %>%
+  filter(!Player == "Bones Hyland" & !Player == "Davon Reed")
+
+
+#per_100 %>% 
+  #mutate(Player = fct_reorder(Player,ORtg)) %>%
+  #ggplot(aes(x=Player,y=ORtg)) +
+  #geom_bar(stat="identity", color="yellow",fill="blue" ) +
+  #labs(x="Player",
+       #y="Offensive Rating",
+       #title="Denver Nuggets per 100 Offensive Rating 2022-23") +
+  #coord_flip()
+
+#per_100 %>% 
+ # mutate(Player = fct_reorder(Player,DRtg)) %>%
+  #ggplot(aes(x=Player,y=DRtg)) +
+  #geom_bar(stat="identity", color="yellow",fill="blue" ) +
+  #labs(x="Player",
+       #y="Defensive Rating",
+       #title="Denver Nuggets per 100 Defensive Rating 2022-23") +
+  #coord_flip()
+#per_100_mutated <- per_100 %>%
+  #group_by(Player) %>%
+  #mutate(TS = 100*((PTS)/(2*(FGA+(0.44*FTA)))), na.rm=TRUE) %>%
+  #mutate(across(c("TS"), round, 1)) %>%
+  #ungroup()
+
+#per_100_mutated %>% 
+  #mutate(Player = fct_reorder(Player,TS)) %>%
+  #ggplot(aes(x=Player,y=TS)) +
+  #geom_bar(stat="identity", color="yellow",fill="blue" ) +
+  #labs(x="Player",
+       #y="True Shooting Percentage",
+       #title="Denver Nuggets per 100 True Shooting 2022-23") +
+  #coord_flip()
+
+
+
+```
+
+```{r}
+#per 36 min
+per_min <- read.csv("C:\\Users\\danie\\OneDrive\\Undergrad\\Sports stats 2 final project\\per min.csv")
+per_min$Player[ per_min$Player == "Nikola Joki?" ] <- "Nikola Jokic"
+per_min$Player[ per_min$Player == "Vlatko ?an?ar" ] <- "Vlatko Cancar"
+per_min <- per_min %>%
+  filter(!Player == "Bones Hyland" & !Player == "Davon Reed")
+
+per_min_mutated <- per_min %>%
+  group_by(Player) %>%
+  mutate(TS = 100*((PTS)/(2*(FGA+(0.44*FTA)))), na.rm=TRUE) %>%
+  mutate(across(c("TS"), round, 1)) %>%
+  ungroup()
+
+per_min_mutated %>% 
+  mutate(Player = fct_reorder(Player,TS)) %>%
+  ggplot(aes(x=Player,y=TS)) +
+  geom_bar(stat="identity", color="yellow",fill="blue" ) +
+  labs(x="Player",
+       y="True Shooting Percentage",
+       title="Denver Nuggets per 36 True Shooting 2022-23") +
+  coord_flip()
+
+```
+
+```{r}
+advanced <- read.csv("C:\\Users\\danie\\OneDrive\\Undergrad\\Sports stats 2 final project\\advanced.csv")
+
+advanced <- advanced %>%
+  filter(!Player == "Bones Hyland" & !Player == "Davon Reed")
+
+advanced %>% 
+  mutate(Player = fct_reorder(Player,PER)) %>%
+  ggplot(aes(x=Player,y=PER)) +
+  geom_bar(stat="identity", color="yellow",fill="blue" ) +
+  labs(x="Player",
+       y="Player Efficiency Rating",
+       title="Denver Nuggets Player Efficiency Rating 2022-23") +
+  coord_flip()
+
+advanced %>% 
+  mutate(Player = fct_reorder(Player,VORP)) %>%
+  ggplot(aes(x=Player,y=VORP)) +
+  geom_bar(stat="identity", color="yellow",fill="blue" ) +
+  labs(x="Player",
+       y="Value Over Replacement",
+       title="Denver Nuggets Value Over Replacement 2022-23") +
+  coord_flip()
+```
+
